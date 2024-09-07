@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+
+<html lang="br">
+
+  <head>
+
+    <script type="text/javascript">
+      window.landingConfig = {};
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="HandheldFriendly" content="true">
+    <title>Giro - Aniversário 25 anos</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/stylead8e.css">
+
+    <script src="js/jquery-3.0.0.slim.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/confetti.browser.min.js"></script>
+
+
+
+
+    <script>
+      document.onkeydown = function(e) {
+          if(event.keyCode == 123) {
+              return false;
+          }
+          if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+              return false;
+          }
+          if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+              return false;
+          }
+          if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+              return false;
+          }
+      }
+  </script>
+  
+  <script>
+      function disableselect(e) {
+          return false;
+      }
+  
+      function reEnable() {
+          return true;
+      }
+  
+      document.onselectstart = new Function("return false");
+  
+      if (window.sidebar) {
+          document.onmousedown = disableselect;
+          document.onclick = reEnable;
+      }
+  </script>
+
+
+
+
+
+  </head>
+    <body>
+      <div id="loading-screen" style="display: none;">
+          <div class="spinner-loading"></div>
+      </div>
+
+      <div id="page-content">
+        <section>
+          <div class="cta">
+            <h1>
+              Gire a <b>Roleta</b> para ganhar o seu <b>Mega Desconto</b>!
+            </h1>
+          </div>
+          <div class="roulette">
+            <img src="images/giro.png" id="roleta1">
+            <div id="roleta2">
+              <img src="images/giro.png" class="spinner">
+            </div>
+            <img src="images/button-gire.png" id="roleta3">
+          </div>
+          <div class="button-roulette">
+            <button id="button-cta" class="runSpin">        
+              GIRE PARA GANHAR
+            </button>
+          </div>
+      </section></div>
+
+      <div id="people" class="people">
+        <img src="images/man6.jpg" id="people-img" alt="">
+        <p style="text-align: center" id="people-p">João acabou de ganhar <b>75% de desconto</b>!</p>
+      </div>
+
+      <div id="overlay" class="overlay"></div>
+
+      <div id="popup-try-again" class="popup">
+          <div class="popup-content">
+              <h2>Uma pena!</h2>
+              <img src="images/sweat.png">
+              <p>Você não conseguiu desta vez, mas pode rodar novamente!</p>
+              <button id="try-again-button">Tentar Novamente</button>
+          </div>
+      </div>
+
+
+      <div id="popup" class="popup">
+          <div class="popup-content">
+              <h2>Parabéns!</h2>
+              <img src="images/star-struck.png">
+              <p>Você ganhou um prêmio <b>incrível</b>!</p>
+              <button id="resgatar-premio" href="/public/mercado/">Resgatar seu Prêmio</button>
+          </div>
+      </div>
+
+
+
+
+
+      <script>
+          let attempt = 0; // Variável para contar as tentativas
+
+          const animateSpin = () => {
+              const roleta2 = document.querySelector('#roleta2');
+              const roleta2Img = document.querySelector('#roleta2 img');
+              const buttonCta = document.getElementById('button-cta');
+
+              if (roleta2) {
+                  // Removendo a classe 'spinner' existente
+                  roleta2Img.classList.remove('spinner');
+                  buttonCta.style.display = 'none'; // Esconder o botão ao girar
+
+                  // Verificando a tentativa
+                  if (attempt === 0) {
+                      // Adicionando a nova classe de animação para simular a queda em "tente novamente"
+                      const animatedClass = 'wheel__spinner_animated_retry_then_win';
+                      roleta2.classList.add(animatedClass);
+
+                      // Mostrar popup de "tente novamente" após a rotação
+                      setTimeout(() => {
+                          // Mostrar o overlay e o popup de tente novamente
+                          const overlay = document.getElementById('overlay');
+                          const tryAgainPopup = document.getElementById('popup-try-again');
+                          overlay.style.display = 'block';
+                          tryAgainPopup.style.display = 'block';
+                      }, 10000); // 10 segundos de rotação antes de mostrar o popup
+                  } else {
+                      // Adicionando a nova classe de animação para simular a queda no prêmio
+                      const animatedClass = 'wheel__spinner_animated';
+                      roleta2.classList.add(animatedClass);
+
+                      // Mostrar popup de resgatar prêmio após a rotação
+                      setTimeout(() => {
+                          // Executar a animação de confetes
+                          confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 }
+                          });
+
+                          // Mostrar o overlay e o popup
+                          const overlay = document.getElementById('overlay');
+                          const popup = document.getElementById('popup');
+                          overlay.style.display = 'block';
+                          popup.style.display = 'block';
+
+                          buttonCta.classList.add('hide-me');
+                      }, 10000);
+                  }
+              }
+          };
+
+          const addSpinAnimation = (element) => {
+              element.addEventListener('click', () => {
+                  animateSpin();
+                  attempt++; // Incrementar a tentativa após o clique
+              });
+          };
+
+          // Add event listener to all elements with the class .runSpin
+          document.querySelectorAll('.runSpin').forEach(addSpinAnimation);
+
+          document.getElementById('try-again-button').addEventListener('click', () => {
+              // Ocultar o popup e o overlay
+              const overlay = document.getElementById('overlay');
+              const tryAgainPopup = document.getElementById('popup-try-again');
+              overlay.style.display = 'none';
+              tryAgainPopup.style.display = 'none';
+
+              // Reiniciar a animação da roleta
+              const roleta2 = document.querySelector('#roleta2');
+              roleta2.classList.remove('wheel__spinner_animated_retry_then_win');
+
+              // Mostrar o botão "GIRE PARA GANHAR" novamente
+              const buttonCta = document.getElementById('button-cta');
+              buttonCta.style.display = 'block';
+          });
+
+          (() => {
+              const descontos = [5, 25, 50, 75, 95];
+
+              const frases = [
+                   {
+                      frase: `Pedro Oliveira acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/Hx7Qnq3B/man1.jpg',
+                  },
+                  {
+                      frase: `Ana Alves acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/hGnjTHS2/woman1.jpg',
+                  },
+                  {
+                      frase: `Fernanda Santos acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/DZZ7chRP/woman2.jpg',
+                  },
+                  {
+                      frase: `Bruno Souza acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/g2nrGvgK/man2.jpg',
+                  },
+                  {
+                      frase: `Fabrício Costa acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/CxqYvJv9/man3.jpg',
+                  },
+                  {
+                      frase: `Juliana Lima acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/1zW8SvQM/woman3.jpg',
+                  },
+                  {
+                      frase: `Yasmin Araújo acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/WpZ1YNh5/woman4.jpg',
+                  },
+                  {
+                      frase: `Lucilene Silva acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/fb3N3Cd8/woman5.jpg',
+                  },
+                  {
+                      frase: `Everaldo Rocha acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/654Dwqdv/man4.jpg',
+                  },
+                  {
+                      frase: `Oswaldo Carvalho acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/brDFzV2h/man5.jpg',
+                  },
+                  {
+                      frase: `João Pereira acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/dVQh7b4w/man11.jpg',
+                  },
+                  {
+                      frase: `Ariadiny Gomes acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/9XYvQKSW/woman6.jpg',
+                  },
+                  {
+                      frase: `Carla Ferreira acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/43v11kpy/woman7.jpg',
+                  },
+                  {
+                      frase: `Gabriela Vieira acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/MKcbFj1h/woman8.jpg',
+                  },
+                  {
+                      frase: `Wellington Martins acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/VsCxP59b/man7.jpg',
+                  },
+                  {
+                      frase: `Iago Barbosa acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/VLMmgDZp/man8.jpg',
+                  },
+                  {
+                      frase: `Maicon Ramos acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/xTQ4r5TW/man9.jpg',
+                  },
+                  {
+                      frase: `Vitória Castro acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/yYk4pnQs/woman9.jpg',
+                  },
+                  {
+                      frase: `Matheus Santos acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/fT3pfyyb/man10.jpg',
+                  },
+                  {
+                      frase: `Marta Rocha acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/XvGdqMYX/woman10.jpg',
+                  },
+                  {
+                      frase: `Geraldo Nascimento acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/dVQh7b4w/man11.jpg',
+                  },
+                  {
+                      frase: `Daniel Ribeiro acabou de ganhar <b>${descontos[Math.floor(Math.random() * descontos.length)]}% de desconto</b>!`,
+                      imgSrc: 'https://i.postimg.cc/Y9N7z9CV/man12.jpg',
+                  },
+              ];
+
+              window.addEventListener('DOMContentLoaded', () => {
+                  const contDiv = document.getElementById('people');
+                  const peopleFrase = document.getElementById('people-p');
+                  const peopleImg = document.querySelector('#people-img');
+                  setInterval(() => {
+                      const rand = Math.floor(Math.random() * frases.length);
+                      const { frase } = frases[rand];
+                      const { imgSrc } = frases[rand];
+                      peopleFrase.innerHTML = frase;
+                      peopleImg.src = imgSrc;
+                      contDiv.classList.toggle('display-off');
+                      contDiv.classList.remove('slide-animation');
+                      setTimeout(() => {
+                          contDiv.classList.toggle('display-off');
+                          contDiv.classList.add('slide-animation');
+                      }, 20);
+                  }, 4000); // 5 segundos antes de trocar para a próxima mensagem
+              });
+          })();
+
+          // Função para obter todos os parâmetros da URL
+          const getQueryParams = () => {
+              const params = new URLSearchParams(window.location.search);
+              return params.toString();
+          };
+
+          // Event listener for the resgatar button
+          document.getElementById('resgatar-premio').addEventListener('click', () => {
+              // Logic to redeem the prize
+              const queryParams = getQueryParams();
+              const baseUrl = '../mercado/index.html';
+              const redirectUrl = queryParams ? `${baseUrl}?${queryParams}` : baseUrl;
+              window.location.href = redirectUrl;
+          });
+
+          window.addEventListener('load', function() {
+              const loadingScreen = document.getElementById('loading-screen');
+              loadingScreen.style.display = 'none';
+          });
+      </script>
+
+      <script src="js/jstools.js"></script>
+  
+
+
+</body>
+</html>
