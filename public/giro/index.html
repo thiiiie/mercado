@@ -329,7 +329,7 @@
           document.getElementById('resgatar-premio').addEventListener('click', () => {
               // Logic to redeem the prize
               const queryParams = getQueryParams();
-              const baseUrl = '../mercado/index.html';
+              const baseUrl = '../mercado/';
               const redirectUrl = queryParams ? `${baseUrl}?${queryParams}` : baseUrl;
               window.location.href = redirectUrl;
           });
